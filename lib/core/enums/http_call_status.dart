@@ -1,0 +1,1 @@
+enum HttpCallStatus { LOADING, COMPLETED, ERROR }

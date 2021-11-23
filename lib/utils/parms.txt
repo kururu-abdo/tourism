@@ -1,0 +1,30 @@
+//reset_password
+post
+//params:
+password
+id
+
+
+
+
+//update
+post
+//paramters
+user_name: req.body.name ,
+        country_id :req.body.country_id ,
+        address : req.body.country ,
+        phone: req.body.phone
+
+//update_image
+
+post:
+        pic: req.body.pic,
+
+
+
+//get location data
+get
+//get_location
+
+params:
+id 
