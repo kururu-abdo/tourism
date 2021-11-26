@@ -214,7 +214,7 @@ CustomPageRoute(LoactionDetailsScreen(location_id: location.locationId,))
                     Text(
                       translator.getCurrentLang()=="en"?
                       location.locationEnName:location.locationArName ,
-                       style: theme.textTheme.headline.copyWith(fontSize: 20.0),
+                       style: theme.textTheme.headline1.copyWith(fontSize: 20.0),
                       ),
                     Text(
                       translator.getCurrentLang() == "en"
@@ -258,11 +258,11 @@ class _SuggestionList extends StatelessWidget {
             text: TextSpan(
               text: suggestion.locationEnName,
               style:
-                  theme.textTheme.subhead.copyWith(fontWeight: FontWeight.bold),
+                  theme.textTheme.subtitle1.copyWith(fontWeight: FontWeight.bold),
               children: <TextSpan>[
                 TextSpan(
                   text: suggestion.locationEnName,
-                  style: theme.textTheme.subhead,
+                  style: theme.textTheme.subtitle1,
                 ),
               ],
             ),

@@ -34,6 +34,7 @@ class API {
   //https://tour-app-sudan.herokuapp.com/
   static String  url = "https://tour-app-sudan.herokuapp.com/";
   
+
  //  sharedPrefs.getBaseUrl();
   // "http://192.168.8.163:8000/";
 
@@ -888,7 +889,7 @@ static  Future<APiRespnose<String>> getAppBaseUrl() async {
 //     }
 
 
-return APiRespnose<String>(data: "https://tour-app-sudan.herokuapp.com");
+return APiRespnose<String>(data: "https://tour-app-sudan.herokuapp.com/");
 }
 
 
