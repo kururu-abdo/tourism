@@ -22,6 +22,7 @@ import 'package:tourapp/core/models/location.dart';
 import 'package:tourapp/core/viewmodels/screens/location/location_details_viewmodel.dart';
 import 'package:tourapp/core/viewmodels/translation_provider.dart';
 import 'package:tourapp/services/API.dart';
+import 'package:tourapp/services/socket_services.dart';
 import 'package:tourapp/ui/shared/custom_tween.dart';
 import 'package:tourapp/ui/shared/transition.dart';
 import 'package:tourapp/ui/views/base_view.dart';
@@ -328,6 +329,11 @@ Navigator.of(context).push(CustomPageRoute(
       
 imageList.add(element.pic);
     });
+
+    
+
+
+
   }
   @override
   Widget build(BuildContext context) {

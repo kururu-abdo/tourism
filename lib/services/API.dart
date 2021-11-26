@@ -394,6 +394,7 @@ try {
             }));
 
         if (response.statusCode == 200) {
+          print(response.body);
           APiRespnose<dynamic>(data: "you liked location");
         }
 
@@ -563,9 +564,9 @@ static Future<APiRespnose<List<FoundedLocations>>> search(
         print(sharedPrefs.getBaseUrl());
     try {
       debugPrint(
-          "-------------SEARCH" + API.url + "location/work_time/id");
+          API.url + "location/search?loc=${str}");
       var response = await http.get(
-        Uri.parse(sharedPrefs.getBaseUrl() + "location/search?loc=${str}"),
+        Uri.parse(API.url + "location/search?loc=${str}"),
       );
       if (response.statusCode == 200) {
         Iterable res = json.decode(response.body)['data'];

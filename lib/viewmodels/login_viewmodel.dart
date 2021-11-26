@@ -7,6 +7,7 @@ import 'package:tourapp/core/utils/constants.dart';
 import 'package:tourapp/locator.dart';
 import 'package:tourapp/services/constants.dart';
 import 'package:tourapp/services/exceptions/exceptions.dart';
+import 'package:tourapp/services/shared_prefs.dart';
 import 'package:tourapp/ui/widgets/err_widget.dart';
 
 class LoginViewModel extends BaseViewModel {
@@ -26,6 +27,7 @@ class LoginViewModel extends BaseViewModel {
   
   _setUser(User user){
     _user = user;
+    
     notifyListeners();
   }
   _setError(AppException error) {

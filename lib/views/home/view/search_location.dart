@@ -234,6 +234,9 @@ CustomPageRoute(LoactionDetailsScreen(location_id: location.locationId,))
 }
 
 class _SuggestionList extends StatelessWidget {
+
+
+
   const _SuggestionList({this.suggestions, this.query, this.onSelected});
   final List<FoundedLocations> suggestions;
   final String query;

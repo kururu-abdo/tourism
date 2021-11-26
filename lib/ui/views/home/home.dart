@@ -21,6 +21,7 @@ import 'package:tourapp/core/utils/constants.dart';
 import 'package:tourapp/core/viewmodels/screens/home/home_viewmodel.dart';
 import 'package:tourapp/services/API.dart';
 import 'package:tourapp/services/shared_prefs.dart';
+import 'package:tourapp/services/socket_services.dart';
 import 'package:tourapp/ui/shared/anim_widget.dart';
 import 'package:tourapp/ui/shared/loading_widget.dart';
 import 'package:tourapp/ui/shared/mock_data.dart';
@@ -396,6 +397,11 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
     // }
     // });
 
+
+
+ SocketService().emit('user-connection', sharedPrefs.getUser()['name']);
+
+
     super.initState();
   }
 
@@ -419,7 +425,6 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<LocationProvider>(context, listen: false);
-
 /*
 FlipDrawer(
         items: [
@@ -576,7 +581,7 @@ FlipDrawer(
                                       child: Column(children: <Widget>[
                                         Expanded(
                                             child: NestedScrollView(
-                                          controller: _scrollController,
+                                        //  controller: _scrollController,
                                           headerSliverBuilder:
                                               (BuildContext context,
                                                   bool innerBoxIsScrolled) {
@@ -626,16 +631,21 @@ FlipDrawer(
                                                           : "لم يتم العثور على مواقع",
                                                     );
                                                   } else {
-                                                    return Container(
-                                                        color: MyThemeData
-                                                                .buildLightTheme()
-                                                            .backgroundColor,
+                                                    return Expanded(
+                                                        // color: MyThemeData
+                                                        //         .buildLightTheme()
+                                                        //     .backgroundColor,
                                                         child: RefreshIndicator(
                                                           onRefresh: () async{
                                                             await viewModel.fetchLocations();
 
                                                           },
                                                           child: ListView.builder(
+                                                            
+                                                            shrinkWrap: true,
+                                                            
+                                                            physics:
+                                                                BouncingScrollPhysics(),
                                                             itemCount: viewModel
                                                                 .locations.length,
                                                             padding:
