@@ -10,6 +10,7 @@ import 'package:tourapp/services/API.dart';
 import 'package:tourapp/services/shared_prefs.dart';
 import 'package:tourapp/services/socket_services.dart';
 import 'package:tourapp/services/stream_sevices.dart';
+import 'package:tourapp/ui/shared/custom_tween.dart';
 
 import 'package:tourapp/ui/shared/my_theme_data.dart';
 
@@ -90,6 +91,7 @@ class _HotelListViewState extends State<HotelListView>
               padding: const EdgeInsets.only(
                   left: 24, right: 24, top: 8, bottom: 16),
               child: InkWell(
+                
                 splashColor: Colors.transparent,
                 onTap: () {
                   widget.callback();
@@ -114,13 +116,14 @@ class _HotelListViewState extends State<HotelListView>
                             AspectRatio(
                               aspectRatio: 2,
                               child: Hero(
-                                tag: widget.hotelData.locationId,
 
-                                transitionOnUserGestures: true,
-                                //  createRectTween: (begin, end) {
-                                //   return CustomRectTween(
-                                //       begin: begin, end: end);
-                                // },
+                                tag: widget.hotelData.locationEnName+widget.hotelData.locationId.toString(),
+
+                             //   transitionOnUserGestures: true,
+                                 createRectTween: (begin, end) {
+                                  return CustomRectTween(
+                                      begin: begin, end: end);
+                                },
                                 child: Image.network(
                                   widget.hotelData.locationPics[0].pic.trim(),
                                   fit: BoxFit.cover,
@@ -524,7 +527,7 @@ SocketService().emit("like", <String, dynamic>{
             //     )
         
           StreamBuilder(
-          key: Key(widget.id.toString()),
+          
           stream: streamSocket.getLikesResponse.where((event) => event['id']==widget.id),
           builder: (BuildContext context,
               AsyncSnapshot<Map> snapshot) {

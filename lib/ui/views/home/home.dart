@@ -631,65 +631,68 @@ FlipDrawer(
                                                           : "لم يتم العثور على مواقع",
                                                     );
                                                   } else {
-                                                    return Expanded(
-                                                        // color: MyThemeData
-                                                        //         .buildLightTheme()
-                                                        //     .backgroundColor,
-                                                        child: RefreshIndicator(
-                                                          onRefresh: () async{
-                                                            await viewModel.fetchLocations();
+                                                    return 
+                                                    Column(
+                                                      children: [
+                                                        Expanded(
+                                                            // color: MyThemeData
+                                                            //         .buildLightTheme()
+                                                            //     .backgroundColor,
+                                                            child: RefreshIndicator(
+                                                              onRefresh: () async{
+                                                                await viewModel.fetchLocations();
 
-                                                          },
-                                                          child: ListView.builder(
-                                                            
-                                                            shrinkWrap: true,
-                                                            
-                                                            physics:
-                                                                BouncingScrollPhysics(),
-                                                            itemCount: viewModel
-                                                                .locations.length,
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .only(top: 8),
-                                                            scrollDirection:
-                                                                Axis.vertical,
-                                                            itemBuilder:
-                                                                (BuildContext
-                                                                        context,
-                                                                    int index) {
-                                                              print(
-                                                                  "/////////////////////////");
-                                                              print(viewModel
-                                                                  .locations
-                                                                  .length);
-                                                              final int count =
-                                                                  hotelList.length >
-                                                                          10
-                                                                      ? 10
-                                                                      : hotelList
-                                                                          .length;
-                                                              final Animation<
-                                                                  double> animation = Tween<
-                                                                          double>(
-                                                                      begin: 0.0,
-                                                                      end: 1.0)
-                                                                  .animate(CurvedAnimation(
-                                                                      parent:
-                                                                          animationController,
-                                                                      curve: Interval(
-                                                                          (1 / count) *
-                                                                              index,
-                                                                          1.0,
-                                                                          curve: Curves
-                                                                              .fastOutSlowIn)));
-                                                              animationController
-                                                                  .forward();
-                                                              return HotelListView(
-                                                                model: viewModel,
-                                                                callback: () {
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .push(
+                                                              },
+                                                              child: ListView.builder(
+                                                                
+                                                                shrinkWrap: true,
+                                                                
+                                                                physics:
+                                                                    BouncingScrollPhysics(),
+                                                                itemCount: viewModel
+                                                                    .locations.length,
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .only(top: 8),
+                                                                scrollDirection:
+                                                                    Axis.vertical,
+                                                                itemBuilder:
+                                                                    (BuildContext
+                                                                            context,
+                                                                        int index) {
+                                                                  print(
+                                                                      "/////////////////////////");
+                                                                  print(viewModel
+                                                                      .locations
+                                                                      .length);
+                                                                  final int count =
+                                                                      hotelList.length >
+                                                                              10
+                                                                          ? 10
+                                                                          : hotelList
+                                                                              .length;
+                                                                  final Animation<
+                                                                      double> animation = Tween<
+                                                                              double>(
+                                                                          begin: 0.0,
+                                                                          end: 1.0)
+                                                                      .animate(CurvedAnimation(
+                                                                          parent:
+                                                                              animationController,
+                                                                          curve: Interval(
+                                                                              (1 / count) *
+                                                                                  index,
+                                                                              1.0,
+                                                                              curve: Curves
+                                                                                  .fastOutSlowIn)));
+                                                                  animationController
+                                                                      .forward();
+                                                                  return HotelListView(
+                                                                    model: viewModel,
+                                                                    callback: () {
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .push(
 
 //   MaterialPageRoute(builder: (_)=>  LoactionDetails(
 
@@ -697,24 +700,26 @@ FlipDrawer(
 
 // ))
 
-                                                                          CustomPageRoute(
-                                                                              LoactionDetails(
-                                                                    location: viewModel
+                                                                              CustomPageRoute(
+                                                                                  LoactionDetails(
+                                                                        location: viewModel
+                                                                                .locations[
+                                                                            index],
+                                                                      )));
+                                                                    },
+                                                                    hotelData: viewModel
                                                                             .locations[
                                                                         index],
-                                                                  )));
+                                                                    animation:
+                                                                        animation,
+                                                                    animationController:
+                                                                        animationController,
+                                                                  );
                                                                 },
-                                                                hotelData: viewModel
-                                                                        .locations[
-                                                                    index],
-                                                                animation:
-                                                                    animation,
-                                                                animationController:
-                                                                    animationController,
-                                                              );
-                                                            },
-                                                          ),
-                                                        ));
+                                                              ),
+                                                            )),
+                                                      ],
+                                                    );
                                                   }
                                                 }
                                               },

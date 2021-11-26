@@ -422,41 +422,51 @@ StreamBuilder<List<Comment>>(
 
 //                   );
 
- return Expanded(
+ return Flex(
 
-   
+  direction: Axis.horizontal,
 
-   
-// height:
-// MediaQuery.of(context).size.height +1000  ,
-
-   
-
-   //MediaQuery.of(context).size.height,
-
-   child: ListView.builder(
- shrinkWrap: true,
-          // scrollDirection: Axis.vertical,
-physics: BouncingScrollPhysics(),
-                            itemCount: snapshot.data.length,
-
-                            itemBuilder: (BuildContext context, int index) {
-
-                              return CommentWidget(
-
-                                comment: snapshot.data[index],
-
-                              );
-
-                            },
-
-                          
-
-                  ),
-
+   children:[ 
+     Expanded(
+ 
+     
+ 
+     
+ // height:
+ // MediaQuery.of(context).size.height +1000  ,
+ 
+     
+ 
+     //MediaQuery.of(context).size.height,
+ 
+     child: ListView.builder(
+   shrinkWrap: true,
+            // scrollDirection: Axis.vertical,
+ physics: BouncingScrollPhysics(),
+                              itemCount: snapshot.data.length,
+ 
+                              itemBuilder: (BuildContext context, int index) {
+ 
+                                return CommentWidget(
+ 
+                                  comment: snapshot.data[index],
+ 
+                                );
+ 
+                              },
+ 
+                            
+ 
+                    ),
+ 
+   ),
+ 
+ 
+ 
+   ]
  );
 
-                         }
+      }
 
                        
 

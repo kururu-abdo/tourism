@@ -370,7 +370,8 @@ imageList.add(element.pic);
                       ) //TextStyle
                       ), //Text
                   background: Hero(
-                    tag: widget.location.locationId,
+                    tag: widget.location.locationEnName +
+                            widget.location.locationId.toString(),
                       transitionOnUserGestures: true,
                         // createRectTween: (begin, end) {
                         //   return CustomRectTween(begin: begin, end: end);
