@@ -161,6 +161,11 @@ void initState() {
                                   sharedPrefs
                                       .saveUserPassword(res.data.password);
                                       sharedPrefs.saveUserIMage(res.data.pic);
+                                          sharedPrefs.saveUser({
+                                      "id": res.data.userId,
+                                      "name": res.data.userName
+                                    });
+
                                   sharedPrefs.changeLoggedIn(true);
                                   Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(builder: (_) {

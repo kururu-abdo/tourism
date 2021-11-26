@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tourapp/core/models/user.dart';
 import 'package:tourapp/services/constants.dart';
 
 class SharedPrefs {
@@ -84,7 +87,14 @@ bool isLoggedIn() {
     return _sharedPrefs.getBool(ISCOMMINGFROMFILTER) ?? false;
   }
 
-
+   void saveUser(Map user){
+     _sharedPrefs.setString('me', json.encode(user));
+   }
+   Map getUser(){
+     print(_sharedPrefs.getString('me'));
+     return json.decode( _sharedPrefs.getString('me'));
+   }
+   
 
 
 

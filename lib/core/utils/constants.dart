@@ -18,3 +18,7 @@ const INFO = "assets/info.json";
    const String TRYAGAIN ="try_txt";
       const String ERR = "err_txt";
       const NOTRIPS = "no_trips";
+
+
+
+const String LOCALSERVER ="https://tour-app-sudan.herokuapp.com/";

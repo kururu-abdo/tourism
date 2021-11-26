@@ -198,6 +198,8 @@ import 'package:tourapp/core/viewmodels/screens/location/rating_view_model.dart'
 import 'package:tourapp/core/viewmodels/translation_provider.dart';
 import 'package:tourapp/services/API.dart';
 import 'package:tourapp/services/shared_prefs.dart';
+import 'package:tourapp/services/socket_services.dart';
+import 'package:tourapp/services/stream_sevices.dart';
 import 'package:tourapp/ui/shared/my_theme_data.dart';
 import 'package:tourapp/viewmodels/comment_view_model.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -229,6 +231,7 @@ class _ReviewsState extends State<Reviews> {
       await context
           .read<CommentViewModel>()
           .fetchData(widget.location.locationId);
+SocketService().emit('comments', widget.location.locationId);
 
 // await context
 //           .read<LikeViewModel>()
@@ -364,56 +367,136 @@ class _ReviewsState extends State<Reviews> {
                   SizedBox(
                     height: 10,
                   ),
-                  Container(
-                    height: MediaQuery.of(context).size.height - 100,
-                    child: Consumer<CommentViewModel>(
-                        builder: (context, model, _) {
-                      if (model.state == CommentViewState.Loading) {
-                        return Center(
-                          child: CircularProgressIndicator(
-                            strokeWidth: 1.5,
-                          ),
-                        );
-                      } else if (model.state == CommentViewState.Error) {
-                        return Text("error");
-                      }
-                      return NestedScrollView(
-                        headerSliverBuilder:
-                            (BuildContext context, bool innerBoxIsScrolled) {
-                          return <Widget>[
-                            // SliverList(
-                            //   delegate: SliverChildBuilderDelegate(
-                            //       (BuildContext context, int index) {
-                            //     return Column(
-                            //       children: <Widget>[
-                            //         getSearchBarUI(),
-                            //       ],
-                            //     );
-                            //   }, childCount: 1),
-                            // ),
-                            SliverPersistentHeader(
-                              pinned: true,
-                              floating: true,
-                              delegate: ContestTabHeader(
-                              Container()
-                              ),
-                              ),
+                  
+StreamBuilder<List<Comment>>(
+
+                      stream: streamSocket.getCommentsResponse,
+
+                    
+
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+
+                       
+
+                       if (snapshot.hasData) {
+
+                        //  if (!snapshot.hasError) {
+
+                        //    return Center(child :Text('error'));
+
+                        //  } else {
+
+//  return Container(
+
+//                     height: MediaQuery.of(context).size.height-100,
+
+//                     child: CustomScrollView(
+
+//                       slivers: <Widget>[
+
+//                          SliverFixedExtentList(
+
+//                                 itemExtent: 50.0,
+
+//                                 delegate: SliverChildBuilderDelegate(
+
+//                                   (BuildContext context, int index) {
+
+//                                       return CommentWidget(
+
+//                               comment: snapshot.data[index],
+
+//                             );
+
+//                                   },
+
+//                                   childCount: snapshot.data.length,
+
+//                                 ),
+
+//                               ),
+
+//                       ],
+
+//                     ),
+
+//                   );
+
+ return Expanded(
+
+   
+
+   
+// height:
+// MediaQuery.of(context).size.height +1000  ,
+
+   
+
+   //MediaQuery.of(context).size.height,
+
+   child: ListView.builder(
+ shrinkWrap: true,
+          // scrollDirection: Axis.vertical,
+physics: BouncingScrollPhysics(),
+                            itemCount: snapshot.data.length,
+
+                            itemBuilder: (BuildContext context, int index) {
+
+                              return CommentWidget(
+
+                                comment: snapshot.data[index],
+
+                              );
+
+                            },
+
                           
-                            
-                          ];
-                        },
-                        body: ListView.builder(
-                          itemCount: model.comments.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return CommentWidget(
-                              comment: model.comments[index],
-                            );
-                          },
-                        ),
-                      );
-                    }),
-                  )
-                ],
+
+                  ),
+
+ );
+
+                         }
+
+                       
+
+                       
+
+                       
+
+                       //}
+
+                       
+
+                       
+
+                       else{
+
+                          return Center(
+
+                          child: CircularProgressIndicator(
+
+                            strokeWidth: 1.5,
+
+                          ));
+
+                       }
+
+                      },
+
+                    ) ,
+
+
+                  Container(
+                    height: 300,
+                    child: CustomScrollView(
+                      slivers: <Widget>[
+                        
+                      ],
+                    ),
+                  ),
+                  
+                                  ],
               ),
             ),
             bottomNavigationBar: Padding(
@@ -432,11 +515,23 @@ class _ReviewsState extends State<Reviews> {
                         onPressed: () async {
                           if (commentTextController.text != null &&
                               commentTextController.text.length > 0) {
-                            await model.addComment(
-                                sharedPrefs.getUserID(),
-                                widget.location.locationId,
-                                commentTextController.text);
+                            // await model.addComment(
+                            //     sharedPrefs.getUserID(),
+                            //     widget.location.locationId,
+                            //     commentTextController.text);
 
+
+SocketService().emit('user-comment',<String, dynamic> {
+  "user": <String, dynamic>{
+  "user_id": sharedPrefs.getUser()['id'] ,
+  "name": sharedPrefs.getUser()['name']  
+  } ,
+  "location": <String, dynamic>{
+"location_id" :  widget.location.locationId,
+"name": widget.location.locationArName
+  } ,
+  "comment": commentTextController.text
+});
                             commentTextController.text = "";
 
                             commentFocus.unfocus();

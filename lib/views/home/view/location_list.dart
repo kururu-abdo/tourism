@@ -7,6 +7,9 @@ import 'package:tourapp/core/viewmodels/screens/home/home_viewmodel.dart';
 import 'package:tourapp/core/viewmodels/screens/location/like_view_model.dart';
 import 'package:tourapp/core/viewmodels/translation_provider.dart';
 import 'package:tourapp/services/API.dart';
+import 'package:tourapp/services/shared_prefs.dart';
+import 'package:tourapp/services/socket_services.dart';
+import 'package:tourapp/services/stream_sevices.dart';
 
 import 'package:tourapp/ui/shared/my_theme_data.dart';
 
@@ -34,48 +37,49 @@ class HotelListView extends StatefulWidget {
   _HotelListViewState createState() => _HotelListViewState();
 }
 
-class _HotelListViewState extends State<HotelListView> with AutomaticKeepAliveClientMixin<HotelListView> {
+class _HotelListViewState extends State<HotelListView>
+    with AutomaticKeepAliveClientMixin<HotelListView> {
   @override
   void initState() {
-  
     // Future.microtask(() async {
     //   context
     //       .read<LikeViewModel>()
     //       .getLocationLikes(widget.hotelData.locationId);
     // });
-getLocationLikes().then((value) {
-setState(() {
-  isLoading=false;
-  likes=value;
-});
-}).onError((error, stackTrace) {
 
-setState(() {
-        isLoading = false;
-        likes = 0;
-      });
-});
-      super.initState();
+
+    // getLocationLikes().then((value) {
+    //   setState(() {
+    //     isLoading = false;
+    //     likes = value;
+    //   });
+    // }).onError((error, stackTrace) {
+    //   setState(() {
+    //     isLoading = false;
+    //     likes = 0;
+    //   });
+    // });
+    super.initState();
   }
-bool isLoading=true;
-int likes=0;
 
- Future<int> getLocationLikes() async {
+  bool isLoading = true;
+  int likes = 0;
+
+  Future<int> getLocationLikes() async {
     var res = await API.getLocationLikes(widget.hotelData.locationId);
     if (!res.error) {
-      return  res.data;
+      return res.data;
     }
-    return  0;
+    return 0;
   }
 
   @override
   Widget build(BuildContext context) {
-    var translator= Provider.of<TranslationProvider>(context);
-        super.build(context); // need to call super method.
+    var translator = Provider.of<TranslationProvider>(context);
+    super.build(context); // need to call super method.
 
     return AnimatedBuilder(
       animation: widget.animationController,
-      
       builder: (BuildContext context, Widget child) {
         return FadeTransition(
           opacity: widget.animation,
@@ -126,7 +130,7 @@ int likes=0;
                             Container(
                               color:
                                   MyThemeData.buildLightTheme().backgroundColor,
-                                  padding: EdgeInsets.only(left:8.0 , right:8.0),
+                              padding: EdgeInsets.only(left: 8.0, right: 8.0),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -143,9 +147,12 @@ int likes=0;
                                               CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Text(
-                                              translator.getCurrentLang()=="en"?
-                                              widget.hotelData.locationEnName: widget
-                                                      .hotelData.locationArName   ,
+                                              translator.getCurrentLang() ==
+                                                      "en"
+                                                  ? widget
+                                                      .hotelData.locationEnName
+                                                  : widget
+                                                      .hotelData.locationArName,
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w600,
@@ -159,10 +166,12 @@ int likes=0;
                                                   MainAxisAlignment.start,
                                               children: <Widget>[
                                                 Text(
-                                                  translator.getCurrentLang()=="en"?
-                                                  widget.hotelData.state
-                                                      .stateEnName:    widget.hotelData.state
-                                                          .stateArName  ,
+                                                  translator.getCurrentLang() ==
+                                                          "en"
+                                                      ? widget.hotelData.state
+                                                          .stateEnName
+                                                      : widget.hotelData.state
+                                                          .stateArName,
                                                   style: TextStyle(
                                                       fontSize: 14,
                                                       color: Colors.grey
@@ -257,231 +266,8 @@ int likes=0;
                                   //     ],
                                   //   ),
                                   //),
-                             
-  
-                           Material(
-                                    color: Colors.transparent,
-                                    child:
-//                             Consumer<LikeViewModel>(builder: (context  , model , _){
-//                                 if(model.widgetState==LikeState.Loading){
-//                                  return Center(child: CircularProgressIndicator(strokeWidth: 1.0),);
 
-//                                 }
-
-// return InkWell(
-//                                   borderRadius: const BorderRadius.all(
-//                                     Radius.circular(32.0),
-//                                   ),
-//                                   onTap: () {},
-//                                   child: Padding(
-//                                     padding: const EdgeInsets.all(8.0),
-//                                     child: Column(
-//                                       children: [
-//                                         Icon(
-//                                           Icons.favorite_border,
-//                                           color: MyThemeData.buildLightTheme()
-//                                               .primaryColor,
-//                                         ),
-//                                         Text(model.likes.toString() , style: TextStyle(color:Colors.red),)
-//                                       ],
-//                                     ),
-//                                   ),
-//                                 );
-
-//                             }
-//                             ,)
-
-InkWell(
-  onTap: ()async{
-await  widget.model.addLike(
-                                                             14, widget.hotelData.locationId);
-  },
-  child:   ConditionalSwitch.single<bool>(
-  
-            context: context,
-  
-            valueBuilder: (BuildContext context) => isLoading,
-  
-            caseBuilders: {
-  
-              true: (BuildContext context) => CircularProgressIndicator(
-  
-                                                            strokeWidth: 1.0),
-  
-          false: (BuildContext context) =>  Column(
-  
-                                                          children: [
-  
-                                                            Icon(
-  
-                                                              Icons
-  
-                                                                  .favorite_border,
-  
-                                                              color: MyThemeData
-  
-                                                                      .buildLightTheme()
-  
-                                                                  .primaryColor,
-  
-                                                            ),
-  
-                                                            Text(
-  
-                                                              likes.toString(),
-  
-                                                                  overflow: TextOverflow.ellipsis,
-  
-                                                              style: TextStyle(
-  
-                                                                  color: Colors
-  
-                                                                      .black),
-  
-                                                            )
-  
-                                                          ],
-  
-                                                        ),
-  
-            },
-  
-            fallbackBuilder: (BuildContext context) =>  Column(
-  
-                                                          children: [
-  
-                                                            Icon(
-  
-                                                              Icons
-  
-                                                                  .favorite_border,
-  
-                                                              color: MyThemeData
-  
-                                                                      .buildLightTheme()
-  
-                                                                  .primaryColor,
-  
-                                                            ),
-  
-                                                            Text(
-  
-                                                              "0",
-  
-                                                                  overflow: TextOverflow.ellipsis,
-  
-                                                              style: TextStyle(
-  
-                                                                  color: Colors
-  
-                                                                      .black),
-  
-                                                            )
-  
-                                                          ],
-  
-                                                        ),
-  
-          ),
-),
-
-
-//                                         StreamBuilder<int>(
-//                                             stream: widget.model
-//                                                 .getLocationLikes(widget
-//                                                     .hotelData.locationId),
-//                                             builder: (context, snapshot) {
-//                                               if (snapshot.connectionState ==
-//                                                   ConnectionState.waiting) {
-//                                                 return Center(
-//                                                   child:
-//                                                       CircularProgressIndicator(
-//                                                           strokeWidth: 1.0),
-//                                                 );
-//                                               } else if (snapshot
-//                                                       .connectionState ==
-//                                                   ConnectionState.done) {
-//                                                 if (snapshot.hasData) {
-//                                                   return InkWell(
-//                                                     borderRadius:
-//                                                         const BorderRadius.all(
-//                                                       Radius.circular(32.0),
-//                                                     ),
-//                                                     onTap: ()async {
-
-// await  widget.model.addLike(
-//                                                               14, widget.hotelData.locationId);
-
-
-//                                                     },
-//                                                     child: Padding(
-//                                                       padding:
-//                                                           const EdgeInsets.all(
-//                                                               8.0),
-//                                                       child:
-                                                      
-//                                                        Column(
-//                                                         children: [
-//                                                           Icon(
-//                                                             Icons
-//                                                                 .favorite_border,
-//                                                             color: MyThemeData
-//                                                                     .buildLightTheme()
-//                                                                 .primaryColor,
-//                                                           ),
-//                                                           Text(
-//                                                             snapshot.data
-//                                                                 .toString()
-//                                                                 .toString(),
-//                                                                 overflow: TextOverflow.ellipsis,
-//                                                             style: TextStyle(
-//                                                                 color: Colors
-//                                                                     .black),
-//                                                           )
-//                                                         ],
-//                                                       ),
-//                                                     ),
-//                                                   );
-//                                                 } else if (snapshot.hasError) {
-//                                                   return InkWell(
-//                                                     borderRadius:
-//                                                         const BorderRadius.all(
-//                                                       Radius.circular(32.0),
-//                                                     ),
-//                                                     onTap: () {},
-//                                                     child: Padding(
-//                                                       padding:
-//                                                           const EdgeInsets.all(
-//                                                               8.0),
-//                                                       child: Column(
-//                                                         children: [
-//                                                           Icon(
-//                                                             Icons
-//                                                                 .favorite_border,
-//                                                             color: MyThemeData
-//                                                                     .buildLightTheme()
-//                                                                 .primaryColor,
-//                                                           ),
-//                                                           Text(
-//                                                             0.toString(),
-//                                                             style: TextStyle(
-//                                                                 color:
-//                                                                     Colors.black),
-//                                                           )
-//                                                         ],
-//                                                       ),
-//                                                     ),
-//                                                   );
-//                                                 }
-//                                               }
-//                                               return Center(
-//                                                 child:
-//                                                     CircularProgressIndicator(
-//                                                         strokeWidth: 1.0),
-//                                               );
-//                                             }),
-                                  ),      
-                             
+                                  LikeWidget(id: widget.hotelData.locationId   , location: widget.hotelData),
                                 ],
                               ),
                             ),
@@ -491,7 +277,7 @@ await  widget.model.addLike(
 //                           top: 8,
 //                           right: 8,
 //                           child:
-                          
+
 //                            Material(
 //                             color: Colors.transparent,
 //                             child:
@@ -612,13 +398,183 @@ await  widget.model.addLike(
       },
     );
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
+    // streamSocket.dispose();
     super.dispose();
   }
 
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
+}
+
+class LikeWidget extends StatefulWidget {
+  const LikeWidget({
+    Key key,
+    this.location,
+   this.id
+  }) : super(key: key);
+
+  final int id;
+  final TourismLocation location;
+
+  @override
+  _LikeWidgetState createState() => _LikeWidgetState();
+}
+
+class _LikeWidgetState extends State<LikeWidget> {
+int totalLikes=0;
+bool ilikeit=false;
+  @override
+  void initState() {
+    super.initState();
+        SocketService().emit('locationlikes', widget.id);
+        SocketService().emit('ifilikeit',<String,dynamic>{
+          "location_id":widget.id,
+          "id":sharedPrefs.getUser()['id']
+        });
+
+       streamSocket.getIlikeItResponse
+       .where((event) => event['location_id'] == widget.id &&
+            event['id'] == sharedPrefs.getUser()['id'])
+       
+       .listen((event) {
+       //  if (event['location_id']==widget.id && event['id']==sharedPrefs.getUser()['id'] ) {
+           
+            
+print('LOCATION LIKE' + event['data']==1 );
+             setState(() {
+
+          ilikeit= event['data']==1;
+        });
+        // }
+
+
+       });
+
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child:
+//                             Consumer<LikeViewModel>(builder: (context  , model , _){
+//                                 if(model.widgetState==LikeState.Loading){
+//                                  return Center(child: CircularProgressIndicator(strokeWidth: 1.0),);
+
+//                                 }
+
+// return InkWell(
+//                                   borderRadius: const BorderRadius.all(
+//                                     Radius.circular(32.0),
+//                                   ),
+//                                   onTap: () {},
+//                                   child: Padding(
+//                                     padding: const EdgeInsets.all(8.0),
+//                                     child: Column(
+//                                       children: [
+//                                         Icon(
+//                                           Icons.favorite_border,
+//                                           color: MyThemeData.buildLightTheme()
+//                                               .primaryColor,
+//                                         ),
+//                                         Text(model.likes.toString() , style: TextStyle(color:Colors.red),)
+//                                       ],
+//                                     ),
+//                                   ),
+//                                 );
+
+//                             }
+//                             ,)
+
+          InkWell(
+        onTap: () async {
+          
+
+SocketService().emit("like", <String, dynamic>{
+"location_id":widget.id ,
+"location_name":widget.location.locationArName ,
+"user_name": sharedPrefs.getUser()['name'] ,
+"id":sharedPrefs.getUser()['id']
+});
+
+          // await widget.model.addLike(
+          //     14, widget.hotelData.locationId);
+        },
+        child: 
+            // Column(
+            //       children: [
+            //         Icon(
+            //           Icons.favorite_border,
+            //           color: MyThemeData
+            //                   .buildLightTheme()
+            //               .primaryColor,
+            //         ),
+            //         Text(
+            //           totalLikes.toString(),
+            //           overflow:
+            //               TextOverflow.ellipsis,
+            //           style: TextStyle(
+            //               color: Colors.black),
+            //         )
+            //       ],
+            //     )
+        
+          StreamBuilder(
+          key: Key(widget.id.toString()),
+          stream: streamSocket.getLikesResponse.where((event) => event['id']==widget.id),
+          builder: (BuildContext context,
+              AsyncSnapshot<Map> snapshot) {
+                if (snapshot.hasError) {
+                  return 
+                  Column(
+                  children: [
+                    Icon(
+                      ilikeit?Icons.favorite_rounded:
+                      Icons.favorite_border,
+                      color: MyThemeData
+                              .buildLightTheme()
+                          .primaryColor,
+                    ),
+                    Text(
+                      0.toString(),
+                      overflow:
+                          TextOverflow.ellipsis,
+                      style: TextStyle(
+                          color: Colors.black),
+                    )
+                  ],
+                );
+                }if(!snapshot.hasData){
+                 return CircularProgressIndicator(
+                     strokeWidth: 1.0); 
+                }
+            return      Column(      children: [
+                    Icon(
+                      ilikeit?Icons.favorite:
+                      Icons.favorite_border,
+                      color: MyThemeData
+                              .buildLightTheme()
+                          .primaryColor,
+                    ),
+                    Text(
+                      snapshot.data['data'].toString(),
+                      overflow:
+                          TextOverflow.ellipsis,
+                      style: TextStyle(
+                          color: Colors.black),
+                    )
+                  ],
+                );
+          },
+        ),
+        
+        
+      ),
+
+    );
+  }
 }

@@ -79,6 +79,7 @@ dependencies:
   image_picker: ^0.6.7+4
   readmore: ^2.1.0
   get_it:
+  socket_io_client: 
   social_media_buttons: 
   # get:
   # get_storage:    
