@@ -34,6 +34,7 @@ class API {
   //https://tour-app-sudan.herokuapp.com/
   static String  url = "https://tour-app-sudan.herokuapp.com/";
   
+
  //  sharedPrefs.getBaseUrl();
   // "http://192.168.8.163:8000/";
 
@@ -565,7 +566,7 @@ static Future<APiRespnose<List<FoundedLocations>>> search(
       debugPrint(
           "-------------SEARCH" + API.url + "location/work_time/id");
       var response = await http.get(
-        Uri.parse(sharedPrefs.getBaseUrl() + "location/search?loc=${str}"),
+        Uri.parse(API.url + "location/search?loc=${str}"),
       );
       if (response.statusCode == 200) {
         Iterable res = json.decode(response.body)['data'];
@@ -887,7 +888,7 @@ static  Future<APiRespnose<String>> getAppBaseUrl() async {
 //     }
 
 
-return APiRespnose<String>(data: "https://tour-app-sudan.herokuapp.com");
+return APiRespnose<String>(data: "https://tour-app-sudan.herokuapp.com/");
 }
 
 
